@@ -8,7 +8,10 @@ int main(int argc, char *argv[]) {
 
     // the draw tasks
     {
-        w.draw_point(10, 10, QColor(50,23,21), 10);
+        w.draw_line(10,10,10,500,QColor(32,43,222));
+        w.draw_line(10,10,500,500,QColor(32,43,222));
+        w.draw_line(10,500,500,10,QColor(32,43,222));
+        w.draw_line(10,10,500,10,QColor(32,43,222));
     }
 
     return a.exec();
