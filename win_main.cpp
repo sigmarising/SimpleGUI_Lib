@@ -1,6 +1,14 @@
 #include "win_main.h"
 #include "ui_win_main.h"
 
+template<class Type>
+void swap_simpleType(Type &a, Type &b){
+    Type t = a;
+    a = b;
+    b = t;
+}
+
+
 Win_Main::Win_Main(QWidget *parent) : QDialog(parent), ui(new Ui::Win_Main) {
     ui->setupUi(this);
 
@@ -46,61 +54,72 @@ bool Win_Main::draw_point(const int x, const int y, const QColor c, int w) {
 }
 
 // use bresenham algorithm
-bool Win_Main::draw_line(const int x1, const int y1, const int x2, const int y2, const QColor c, int w) {
+bool Win_Main::draw_line(const int x_1, const int y_1, const int x_2, const int y_2, const QColor c, int w) {
+    // judge whether the position is valid
     if ( !(
-            (0 <= x1) && (x1 <= WIN_WIGHT) && (0 <= y1) && (y1 <= WIN_HEIGHT) &&
-            (0 <= x2) && (x2 <= WIN_WIGHT) && (0 <= y2) && (y2 <= WIN_HEIGHT)
+            (0 <= x_1) && (x_1 <= WIN_WIGHT) && (0 <= y_1) && (y_1 <= WIN_HEIGHT) &&
+            (0 <= x_2) && (x_2 <= WIN_WIGHT) && (0 <= y_2) && (y_2 <= WIN_HEIGHT)
              ) )
         return false;
 
-    // init two point
-    int x_1 = 0, y_1 = 0, x_2 = 0, y_2 = 0;
-    if (x1 <= x2){
-        x_1 = x1, y_1 = y1;
-        x_2 = x2, y_2 = y2;
+
+    // adjust two point
+    int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+    if (x_1 <= x_2){
+        x1 = x_1, y1 = y_1;
+        x2 = x_2, y2 = y_2;
     }
     else{
-        x_1 = x2, y_1 = y2;
-        x_2 = x1, y_2 = y1;
+        x1 = x_2, y1 = y_2;
+        x2 = x_1, y2 = y_1;
     }
 
-    int dx = x_2 - x_1;    // must be positive
-    int dy = y_2 - y_1;    // can be positive or nagative
 
-    // handle dx = 0;
-    if(0 == dx){
-        if (y_1 >= y_2){
-            int t = y_2;
-            y_1 = y_2;
-            y_2 = t;
-        }
-        for (int i = y_1; i <= y_2; i++)
-            draw_point(x_1, i, c, w);
-        return true;
-    }
+    // init var
+    // default condition :
+    //     delta_y > 0 && delta_x >= delta_y
+    int delta_x = x2 - x1;  // must be positive
+    int delta_y = y2 - y1;  // can be positive or nagative
+    int x = x1, y = y1;
 
-    // handle others
-    int e = -dx;
+
+    // use delta_inc to handle :
+    //      negative delta_y
     int delta_inc = 1;
-
-    // use delta_inc to handle negative dy
-    if (dy >= 0)
+    if (delta_y >= 0)
         delta_inc = 1;
     else{
         delta_inc = -1;
-        dy *= -1;
-    } // there dx dy both be positive
+        delta_y *= -1;
+    } // there, delta_x delta_y both be positive
 
-    // main draw
-    int x = x_1, y = y_1;
-    for(int i = 0; i <= dx; i++){
-        draw_point(x, y, c, w);
-        if (e>=0){
+
+    // handle delta_x < delta_y
+    bool sign_k_LG_1 = false;
+    if(delta_x < delta_y){
+        swap_simpleType(delta_x, delta_y);
+        sign_k_LG_1 = true;
+        if(y1 > y2){
+            x = y2;
+            y = x2;
+        }
+        else
+            swap_simpleType(x, y);
+    }
+
+    // main algorithm
+    int e = -delta_x;
+    for(int i = 0; i <= delta_x; i++){
+        if (sign_k_LG_1)
+            draw_point(y, x, c, w);
+        else
+            draw_point(x, y, c, w);
+        if (e >= 0){
             y += delta_inc;
-            e = e - 2 * dx;
+            e = e - 2 * delta_x;
         }
         x++;
-        e = e + 2 * dy;
+        e = e + 2 * delta_y;
     }
 
     return true;

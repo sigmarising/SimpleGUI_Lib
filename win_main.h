@@ -26,7 +26,7 @@ public:
     // add functions
     void paintEvent(QPaintEvent *);
     bool draw_point(int const x, int const y, QColor const c, int w = 1);
-    bool draw_line(int const x1, int const y1, int const x2, int const y2, QColor const c, int w = 1);
+    bool draw_line(int const x_1, int const y_1, int const x_2, int const y_2, QColor const c, int w = 1);
 
 private:
     Ui::Win_Main *ui;
