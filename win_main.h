@@ -8,8 +8,8 @@
 #include <QDialog>
 
 // define windows
-#define WIN_WIGHT   800
-#define WIN_HEIGHT  600
+#define WIN_WIGHT   1000
+#define WIN_HEIGHT  500
 #define WIN_TITLE   "Draw Test"
 
 namespace Ui {
@@ -25,7 +25,8 @@ public:
 
     // add functions
     void paintEvent(QPaintEvent *);
-    void draw_point(int const x, int const y, QColor const c, int w = 1);
+    bool draw_point(int const x, int const y, QColor const c, int w = 1);
+    bool draw_line(int const x_1, int const y_1, int const x_2, int const y_2, QColor const c, int w = 1);
 
 private:
     Ui::Win_Main *ui;
