@@ -8,8 +8,8 @@
 #include <QDialog>
 
 // define windows
-#define WIN_WIGHT   800
-#define WIN_HEIGHT  600
+#define WIN_WIGHT   1000
+#define WIN_HEIGHT  500
 #define WIN_TITLE   "Draw Test"
 
 namespace Ui {

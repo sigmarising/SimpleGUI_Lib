@@ -10,7 +10,7 @@ Win_Main::Win_Main(QWidget *parent) : QDialog(parent), ui(new Ui::Win_Main) {
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
 
     // init pixmap
-    Pix = QPixmap(WIN_WIGHT, WIN_WIGHT);
+    Pix = QPixmap(WIN_WIGHT, WIN_HEIGHT);
     Pix.fill(Qt::white);
 
     // init isdraw
@@ -83,23 +83,24 @@ bool Win_Main::draw_line(const int x1, const int y1, const int x2, const int y2,
     int e = -dx;
     int delta_inc = 1;
 
-    if (dy > 0)
+    // use delta_inc to handle negative dy
+    if (dy >= 0)
         delta_inc = 1;
     else{
         delta_inc = -1;
         dy *= -1;
     } // there dx dy both be positive
 
-    int j = y_1;
-    for(int i = x_1; i <= x_2; i++){
-        if (e < 0){
-            e = e + 2 * dy;
+    // main draw
+    int x = x_1, y = y_1;
+    for(int i = 0; i <= dx; i++){
+        draw_point(x, y, c, w);
+        if (e>=0){
+            y += delta_inc;
+            e = e - 2 * dx;
         }
-        else{
-            j += delta_inc;
-            e = e + 2 * dy - 2 * dx;
-        }
-        draw_point(i, j, c, w);
+        x++;
+        e = e + 2 * dy;
     }
 
     return true;
