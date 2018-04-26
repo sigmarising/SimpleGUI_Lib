@@ -38,8 +38,8 @@ public:
     bool draw_line(int const x_1, int const y_1, int const x_2, int const y_2, QColor const c, int w = 1);
 
     // fill the shape defined by
-    //      outer points stored in points_out
-    //      inner points stored in points_in
+    //      outer points stored in points_out   (clockwith or anticlockwith)
+    //      inner points stored in points_in    (clockwith or anticlockwith)
     // with shadow_line in color c
     //      default gradiant k = 1
     //      default side width h = 10

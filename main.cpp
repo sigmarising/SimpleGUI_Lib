@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         j.push_back(pair<int,int>(300,50));
         j.push_back(pair<int,int>(300,300));
         j.push_back(pair<int,int>(50,300));
-        w.fill_shadow_line(i,j,QColor(100,100,100),1);
+        w.fill_shadow_line(i,j,QColor(100,222,12),1);
 
 
     }
