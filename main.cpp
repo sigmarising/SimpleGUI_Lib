@@ -28,10 +28,14 @@ int main(int argc, char *argv[]) {
         w.draw_line(10,10,10,500,QColor(0,0,0));
         vector< pair<int,int> >i,j;
         i.push_back(pair<int,int>(10,10));
-        i.push_back(pair<int,int>(10,500));
         i.push_back(pair<int,int>(500,10));
         i.push_back(pair<int,int>(500,500));
-        w.fill_shadow_line(i,j,QColor(100,100,100));
+        i.push_back(pair<int,int>(10,500));
+        j.push_back(pair<int,int>(50,50));
+        j.push_back(pair<int,int>(300,50));
+        j.push_back(pair<int,int>(300,300));
+        j.push_back(pair<int,int>(50,300));
+        w.fill_shadow_line(i,j,QColor(100,100,100),1);
 
 
     }

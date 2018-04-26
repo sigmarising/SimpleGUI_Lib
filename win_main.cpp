@@ -136,6 +136,9 @@ bool Win_Main::draw_line(const int x_1, const int y_1, const int x_2, const int 
 }
 
 bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<int, int> > points_in, const QColor c, int k, int h, int w) {
+    // rejust k
+    k *= -1;
+
     // define the shape's line
     class line {
     public:
@@ -156,14 +159,14 @@ bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<
             }
         }
         bool check_cross(int const b){
-            if (b_min < b && b < b_max)
+            if (b_min <= b && b <= b_max)
                 return true;
             else
                 return false;
         }
         pair<int, int> get_cross_point(int const b, int const k){
             int xi = 0, yi = 0;
-            xi = int(double(x1 * y2 - x2 * y1 + b * (x2 - x1)) / double(y2 - y1 - k * (x2 - x1)));
+            xi = int(double(x1 * y2 - y1 * x2 + b * (x2 - x1)) / double((y2 - y1) - k * (x2 - x1)));
             yi = k * xi + b;
             pair<int, int> temp(xi, yi);
             return temp;
@@ -201,7 +204,7 @@ bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<
     }
     if(t+1 !=0){
         index++;
-        v_line[index].reinit(points_in[0].first, points_in[0].second, points_in[points_in.size() - 1].first, points_in[points_out.size() - 1].second, k);
+        v_line[index].reinit(points_in[0].first, points_in[0].second, points_in[points_in.size() - 1].first, points_in[points_in.size() - 1].second, k);
     }
     for (int i = 0; i < v_line.size(); i++){
         pair<int, int>t = v_line[i].get_B_min_max();
@@ -212,23 +215,29 @@ bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<
     }
 
     // draw
-    int delta_b = int(double(h)/double(abs(cos(atan(k)))));
+    int delta_b = int(double(h)/abs(cos(atan(double(k)))));
     int b_now = B_MIN + delta_b;
     while(B_MIN < b_now && b_now < B_MAX){
         vector< pair<int,int> >for_draw;
 
+        // get cross point
         for(int i = 0; i < v_line.size(); i++){
             if(v_line[i].check_cross(b_now)){
                 for_draw.push_back(v_line[i].get_cross_point(b_now, k));
             }
         }
 
+        // sort by x
         sort(for_draw.begin(), for_draw.end(), sort_use_draw_shadow_line);
 
+        // remove duplicate
+        for_draw.erase(unique(for_draw.begin(), for_draw.end()), for_draw.end());
+
+        // draw
         if(for_draw.size() % 2 == 0){
-            for(int i = 0; i < for_draw.size() - 1; i+=2){
-                draw_line(for_draw[i].first, for_draw[i].second, for_draw[i+1].first, for_draw[i+1].second, c, w);
-            }
+            if (for_draw.size() != 0)
+                for(int i = 0; i < for_draw.size() - 1; i+=2)
+                    draw_line(for_draw[i].first, for_draw[i].second, for_draw[i+1].first, for_draw[i+1].second, c, w);
         }
         else{
             draw_line(for_draw[0].first, for_draw[0].second,for_draw[for_draw.size()-1].first, for_draw[for_draw.size()-1].second, c, w);
