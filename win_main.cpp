@@ -2,6 +2,8 @@
 #include "ui_win_main.h"
 #include <cmath>
 #include <algorithm>
+#include <stack>
+#define PI 3.141592653
 using namespace std;
 
 template<class Type>
@@ -245,6 +247,119 @@ bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<
 
         b_now += delta_b;
     }
+
+    return true;
+}
+
+bool Win_Main::fill_color(int const x, int const y, QColor const old_c, QColor const new_c) {
+    if ( !( (0 <= x) && (x <= WIN_WIGHT) && (0 <= y) && (y <= WIN_HEIGHT) ) )
+        return false;
+
+    stack< pair<int ,int > > s;
+    s.push(pair<int, int>(x, y));
+
+    while(!s.empty()){
+        pair<int ,int >t = s.top();
+        s.pop();
+        int a = t.first, b = t.second;
+        draw_point_without_set(a, b, new_c);
+
+        if((a+1 <= WIN_WIGHT) && QColor(Pix.toImage().pixel(a+1, b)) == old_c && !is_draw[a+1][b])
+            s.push(pair<int,int>(a+1,b));
+        if((b+1 <= WIN_HEIGHT) && QColor(Pix.toImage().pixel(a, b+1)) == old_c && !is_draw[a][b+1])
+            s.push(pair<int,int>(a,b+1));
+        if((0 <= a-1) && QColor(Pix.toImage().pixel(a-1, b)) == old_c && !is_draw[a-1][b])
+            s.push(pair<int,int>(a-1,b));
+        if((0 <= b-1) && QColor(Pix.toImage().pixel(a, b-1)) == old_c && !is_draw[a][b-1])
+            s.push(pair<int,int>(a,b-1));
+    }
+
+    return true;
+}
+
+bool Win_Main::draw_arc(const int x0, const int y0, int const r, double start_angle, double end_angle, const QColor c, int w) {
+    if( !( (0 <= x0-r) && (x0+r <= WIN_WIGHT) && (0 <= y0-r) && (y0+r <= WIN_HEIGHT) ) )
+        return false;
+
+    int x = 0, y = r, d = 3 - 2 * r;
+    // vector 1 up
+    // vector 2 down
+    vector< pair<int, int> >points_1, points_2;
+    // 1/8
+    while (x<y){
+        points_1.push_back(pair<int, int>(x, y));
+        if (d < 0)
+            d = d + 4 * x + 6;
+        else {
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
+
+    for(int i = 0; i < points_1.size(); i++)
+        points_2.push_back(pair<int,int>(points_1[i].second, points_1[i].first));
+    for(int i = points_2.size() - 1; i >= 0 ; i--)
+        points_1.push_back(points_2[i]);
+    points_2.clear();
+
+    for(int i = 0; i < points_1.size(); i++)
+        points_2.push_back(pair<int,int>(-points_1[i].first, points_1[i].second));
+    for(int i = 0; i < points_2.size(); i++)
+        points_1.insert(points_1.begin(), points_2[i]);
+    points_2.clear();
+
+    for(int i = 0; i < points_1.size(); i++)
+        points_2.push_back(pair<int,int>(points_1[i].first, -points_1[i].second));
+
+    if(start_angle > end_angle){
+        int t = start_angle;
+        start_angle = end_angle;
+        end_angle = t;
+    }
+
+
+    // draw
+    if(end_angle <= 180){
+        x = int(r*cos(end_angle*PI/180));
+        y = int(r*cos(start_angle*PI/180));
+        for(int i = 0; i < points_1.size(); i++)
+            if (x <= points_1[i].first && points_1[i].first <= y)
+                draw_point(x0 + points_1[i].first, y0 + points_1[i].second, c, w);
+    }
+    else{
+        if (start_angle < 180){
+            y = int(r*cos(start_angle*PI/180));
+            for(int i = 0; i < points_1.size(); i++)
+                if (points_1[i].first <= y)
+                    draw_point(x0 + points_1[i].first, y0 + points_1[i].second, c, w);
+            x = INT_MIN;
+        }
+        else{
+            x = int(r*cos(start_angle*PI/180));
+        }
+
+        y = int(r*cos(end_angle*PI/180));
+
+        for(int i = 0; i < points_2.size(); i++)
+            if (x <= points_2[i].first && points_2[i].first <= y)
+                draw_point(x0 + points_2[i].first, y0 + points_2[i].second, c, w);
+    }
+
+    return true;
+}
+
+bool Win_Main::draw_point_without_set(const int x, const int y, const QColor c, int w) {
+    if ( !( (0 <= x) && (x <= WIN_WIGHT) && (0 <= y) && (y <= WIN_HEIGHT) ) )
+        return false;
+
+    QPainter Painter(&Pix);
+
+    Painter.setPen(QPen(c, w));
+
+    Painter.drawPoint(x, y);
+
+//    is_draw[x][y] = true;
 
     return true;
 }

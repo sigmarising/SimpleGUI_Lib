@@ -26,6 +26,12 @@ int main(int argc, char *argv[]) {
         w.draw_line(500,10,500,500,QColor(0,0,0));
         w.draw_line(500,500,10,500,QColor(0,0,0));
         w.draw_line(10,10,10,500,QColor(0,0,0));
+        w.draw_line(50,50,300,50,QColor(0,0,0));
+        w.draw_line(300,50,300,300,QColor(0,0,0));
+        w.draw_line(300,300,50,300,QColor(0,0,0));
+        w.draw_line(50,300,50,50,QColor(0,0,0));
+        w.draw_line(70,70,70,50,QColor(0,0,0));
+        w.draw_line(70,70,50,70,QColor(0,0,0));
         vector< pair<int,int> >i,j;
         i.push_back(pair<int,int>(10,10));
         i.push_back(pair<int,int>(500,10));
@@ -35,8 +41,9 @@ int main(int argc, char *argv[]) {
         j.push_back(pair<int,int>(300,50));
         j.push_back(pair<int,int>(300,300));
         j.push_back(pair<int,int>(50,300));
-        w.fill_shadow_line(i,j,QColor(100,222,12),1);
-
+//        w.fill_shadow_line(i,j,QColor(100,222,12),1);
+//        w.fill_color(80,80, QColor(255,255,255), QColor(22,45,56));
+        w.draw_arc(400,400,50,200,360,QColor(0,0,0));
 
     }
 

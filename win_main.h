@@ -46,8 +46,24 @@ public:
     //      default width w = 1
     bool fill_shadow_line(vector< pair<int, int> >points_out, vector< pair<int, int> >points_in, QColor const c, int k = 1, int h = 10, int w = 1);
 
+    // fill color
+    //      without set the is_draw
+    //      set old color to new color
+    bool fill_color(int const x, int const y, QColor const old_c, QColor const new_c);
+
+    //
+    //
+    //
+    //
+    bool draw_arc(int const x0, int const y0, int const r, double start_angle, double end_angle, QColor const c, int w = 1);
+
 private:
     Ui::Win_Main *ui;
+
+    // draw point on (x, y) with color c
+    //      default width w = 1
+    //      this func don't set the is_draw arr
+    bool draw_point_without_set(int const x, int const y, QColor const c, int w = 1);
 
     // add pixmap
     QPixmap Pix;
