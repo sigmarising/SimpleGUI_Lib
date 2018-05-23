@@ -1,4 +1,4 @@
-#include "win_main.h"
+﻿#include "win_main.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
@@ -7,43 +7,51 @@ int main(int argc, char *argv[]) {
     w.show();
 
     {
-//        w.draw_line(0, 30, 800, 30, QColor(255, 0, 0));
-//        w.draw_line(800, 60, 0, 60, QColor(255, 0, 0));
+        w.draw_line(100,100,300,300,QColor(139,101,8));
+        w.draw_line(300,100,100,300,QColor(255,115,50));
+        w.draw_line(200,100,200,300,QColor(255,106,106));
+        w.draw_line(100,200,300,200,QColor(160,32,240));
 
-//        w.draw_line(400, 500, 400, 0, QColor(0, 255, 100));
-//        w.draw_line(100, 0, 100, 500, QColor(0, 255, 100));
 
-//        w.draw_line(0, 500, 800, 0, QColor(0, 0, 255));
-//        w.draw_line(0, 500, 100, 0, QColor(0, 0, 255));
-//        w.draw_line(10, 0, 0, 500,  QColor(0, 0, 255));
-//        w.draw_line(700, 0, 0, 500,  QColor(0, 0, 255));
+        w.draw_line(800-10,100-10,900+10,200+10,QColor(0,0,0));
+        w.draw_line(900+10,200-10,800-10,300+10,QColor(0,0,0));
+        w.draw_line(800+10,300+10,700-10,200-10,QColor(0,0,0));
+        w.draw_line(700-10,200+10,800+10,100-10,QColor(0,0,0));
+        w.fill_color(800, 200, QColor(255,255,255), QColor(146,168,209));
 
-//        w.draw_line(800, 200, 0, 0, QColor(200, 100, 50));
-//        w.draw_line(100, 500, 0, 0, QColor(200, 100, 50));
-//        w.draw_line(0, 0, 800, 500, QColor(200, 100, 50));
-//        w.draw_line(0, 0, 150, 500, QColor(200, 100, 50));
-        w.draw_line(10,10,500,10,QColor(0,0,0));
-        w.draw_line(500,10,500,500,QColor(0,0,0));
-        w.draw_line(500,500,10,500,QColor(0,0,0));
-        w.draw_line(10,10,10,500,QColor(0,0,0));
-        w.draw_line(50,50,300,50,QColor(0,0,0));
-        w.draw_line(300,50,300,300,QColor(0,0,0));
-        w.draw_line(300,300,50,300,QColor(0,0,0));
-        w.draw_line(50,300,50,50,QColor(0,0,0));
-        w.draw_line(70,70,70,50,QColor(0,0,0));
-        w.draw_line(70,70,50,70,QColor(0,0,0));
+        w.draw_line(500-10,100-10,600+10,200+10,QColor(0,0,0));
+        w.draw_line(600+10,200-10,500-10,300+10,QColor(0,0,0));
+        w.draw_line(500+10,300+10,400-10,200-10,QColor(0,0,0));
+        w.draw_line(400-10,200+10,500+10,100-10,QColor(0,0,0));
+        w.draw_line(460,160,540,160,QColor(0,0,0));
+        w.draw_line(540,160,540,240,QColor(0,0,0));
+        w.draw_line(540,240,460,240,QColor(0,0,0));
+        w.draw_line(460,240,460,160,QColor(0,0,0));
         vector< pair<int,int> >i,j;
-        i.push_back(pair<int,int>(10,10));
-        i.push_back(pair<int,int>(500,10));
-        i.push_back(pair<int,int>(500,500));
-        i.push_back(pair<int,int>(10,500));
-        j.push_back(pair<int,int>(50,50));
-        j.push_back(pair<int,int>(300,50));
-        j.push_back(pair<int,int>(300,300));
-        j.push_back(pair<int,int>(50,300));
-//        w.fill_shadow_line(i,j,QColor(100,222,12),1);
-//        w.fill_color(80,80, QColor(255,255,255), QColor(22,45,56));
-        w.draw_arc(400,400,50,200,360,QColor(0,0,0));
+        i.push_back(pair<int,int>(500,100));
+        i.push_back(pair<int,int>(600,200));
+        i.push_back(pair<int,int>(500,300));
+        i.push_back(pair<int,int>(400,200));
+        j.push_back(pair<int,int>(460,160));
+        j.push_back(pair<int,int>(540,160));
+        j.push_back(pair<int,int>(540,240));
+        j.push_back(pair<int,int>(460,240));
+        w.fill_shadow_line(i,j,QColor(220,100,55),4.3);
+
+        w.draw_arc(200,500,100,0,360,QColor(30,144,255));
+        w.draw_arc(200,500,80,0,250,QColor(30,144,2));
+        w.draw_arc(200,500,60,220,300,QColor(30,44,55));
+        w.draw_arc(200,500,40,70,260,QColor(3,144,5));
+
+        w.draw_ellipse(500,500,150,100,0,360,QColor(123,33,25));
+        w.draw_ellipse(500,500,130,80,0,220,QColor(13,33,25));
+        w.draw_ellipse(500,500,110,60,50,360,QColor(13,3,5));
+        w.draw_ellipse(500,500,90,40,70,140,QColor(1,3,225));
+        w.draw_ellipse(500,500,70,20,111,333,QColor(3,133,5));
+
+        w.draw_text(800,600,QColor(0,0,0));
+        w.draw_text(800,500,QColor(255,0,0));
+        w.draw_text(800,400,QColor(0,0,255));
 
     }
 

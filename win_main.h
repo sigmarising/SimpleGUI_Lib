@@ -1,4 +1,4 @@
-#ifndef WIN_MAIN_H
+﻿#ifndef WIN_MAIN_H
 #define WIN_MAIN_H
 
 // add header
@@ -44,19 +44,28 @@ public:
     //      default gradiant k = 1
     //      default side width h = 10
     //      default width w = 1
-    bool fill_shadow_line(vector< pair<int, int> >points_out, vector< pair<int, int> >points_in, QColor const c, int k = 1, int h = 10, int w = 1);
+    bool fill_shadow_line(vector< pair<int, int> >points_out, vector< pair<int, int> >points_in, QColor const c, double k = 1, int h = 10, int w = 1);
 
     // fill color
     //      without set the is_draw
     //      set old color to new color
     bool fill_color(int const x, int const y, QColor const old_c, QColor const new_c);
 
-    //
-    //
-    //
-    //
+    // draw arc line
+    //      x0 y0 define the center of the circle
+    //      r define the R
+    //      angle can be from 0 to 360
     bool draw_arc(int const x0, int const y0, int const r, double start_angle, double end_angle, QColor const c, int w = 1);
 
+    // draw ellipse line
+    //      x0 y0 define the center of the circle
+    //      a b is the A B
+    //      angle can be from 0 to 360
+    bool draw_ellipse(int const x0, int const y0, int const a, int const b, double start_angle, double end_angle, QColor const c, int w = 1);
+
+    // draw text
+    //      draw the name with color c
+    bool draw_text(int const x, int const y, QColor const c);
 private:
     Ui::Win_Main *ui;
 

@@ -1,4 +1,4 @@
-#include "win_main.h"
+﻿#include "win_main.h"
 #include "ui_win_main.h"
 #include <cmath>
 #include <algorithm>
@@ -137,14 +137,14 @@ bool Win_Main::draw_line(const int x_1, const int y_1, const int x_2, const int 
     return true;
 }
 
-bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<int, int> > points_in, const QColor c, int k, int h, int w) {
+bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<int, int> > points_in, const QColor c, double k, int h, int w) {
     // rejust k
     k *= -1;
 
     // define the shape's line
     class line {
     public:
-        void reinit(int x_1, int y_1, int x_2, int y_2, int k) {
+        void reinit(int x_1, int y_1, int x_2, int y_2, double k) {
             x1 = x_1; y1 = y_1;
             x2 = x_2; y2 = y_2;
 
@@ -166,7 +166,7 @@ bool Win_Main::fill_shadow_line(vector<pair<int, int> > points_out, vector<pair<
             else
                 return false;
         }
-        pair<int, int> get_cross_point(int const b, int const k){
+        pair<int, int> get_cross_point(int const b, double const k){
             int xi = 0, yi = 0;
             xi = int(double(x1 * y2 - y1 * x2 + b * (x2 - x1)) / double((y2 - y1) - k * (x2 - x1)));
             yi = k * xi + b;
@@ -313,7 +313,7 @@ bool Win_Main::draw_arc(const int x0, const int y0, int const r, double start_an
         points_2.push_back(pair<int,int>(points_1[i].first, -points_1[i].second));
 
     if(start_angle > end_angle){
-        int t = start_angle;
+        double t = start_angle;
         start_angle = end_angle;
         end_angle = t;
     }
@@ -344,6 +344,57 @@ bool Win_Main::draw_arc(const int x0, const int y0, int const r, double start_an
         for(int i = 0; i < points_2.size(); i++)
             if (x <= points_2[i].first && points_2[i].first <= y)
                 draw_point(x0 + points_2[i].first, y0 + points_2[i].second, c, w);
+    }
+
+    return true;
+}
+
+bool Win_Main::draw_ellipse(const int x0, const int y0, const int a, const int b, double start_angle, double end_angle, const QColor c, int w) {
+    if( !( (0 <= x0-a)&&( x0+a <= WIN_WIGHT)&&(0<=y0-b)&&(y0+b<=WIN_HEIGHT) ) )
+        return false;
+
+    if(start_angle > end_angle){
+        double t = start_angle;
+        start_angle = end_angle;
+        end_angle = t;
+    }
+
+    double t = start_angle;
+    double dt = 0.02;
+    int x_1 = int(a * cos(t*PI/180));
+    int y_1 = int(b * sin(t*PI/180));
+    while(t <= end_angle){
+        int x = int(a * cos(t*PI/180));
+        int y = int(b * sin(t*PI/180));
+        draw_line(x0+x_1, y0+y_1, x0+x, y0+y, c, w);
+        x_1 = x;
+        y_1 = y;
+
+        t += dt;
+    }
+
+    return true;
+}
+
+bool Win_Main::draw_text(const int x, const int y, QColor const c) {
+    QPixmap TPixmap;
+    TPixmap = QPixmap(200, 100);
+    TPixmap.fill(Qt::white);
+
+    QPainter TPainter(&TPixmap);
+    TPainter.setPen(c);
+
+    QFont Tfont;
+    Tfont.setFamily("Microsoft YaHei");
+    Tfont.setPointSize(30);
+    TPainter.setFont(Tfont);
+    TPainter.drawText(QPointF(50,50), QString::fromLocal8Bit("张云"));
+
+    for(int i = 0; i < 200; i++){
+        for(int j = 0; j < 100; j++){
+            if(QColor(TPixmap.toImage().pixel(i,j)) == c)
+                draw_point(x + i, y + j, c);
+        }
     }
 
     return true;
