@@ -6,6 +6,7 @@
 #define PI 3.141592653
 using namespace std;
 
+// template for swap two variable
 template<class Type>
 void swap_simpleType(Type &a, Type &b){
     Type t = a;
@@ -13,6 +14,8 @@ void swap_simpleType(Type &a, Type &b){
     b = t;
 }
 
+// for cpp sort use
+//   in fill shadow line
 bool sort_use_draw_shadow_line(pair<int,int> i, pair<int, int> j) {
     if (i.first != j.first)
         return i.first < j.first;
@@ -20,7 +23,7 @@ bool sort_use_draw_shadow_line(pair<int,int> i, pair<int, int> j) {
         return i.second < j.second;
 }
 
-
+// windows setup
 Win_Main::Win_Main(QWidget *parent) : QDialog(parent), ui(new Ui::Win_Main) {
     ui->setupUi(this);
 
@@ -39,6 +42,7 @@ Win_Main::Win_Main(QWidget *parent) : QDialog(parent), ui(new Ui::Win_Main) {
             is_draw[i][j] = false;
 }
 
+// windows delete
 Win_Main::~Win_Main() {
     delete ui;
 }
@@ -258,6 +262,7 @@ bool Win_Main::fill_color(int const x, int const y, QColor const old_c, QColor c
     stack< pair<int ,int > > s;
     s.push(pair<int, int>(x, y));
 
+    // simulate a stack to use water flow algorithm
     while(!s.empty()){
         pair<int ,int >t = s.top();
         s.pop();
@@ -299,7 +304,7 @@ bool Win_Main::draw_arc(const int x0, const int y0, int const r, double start_an
 
     for(int i = 0; i < points_1.size(); i++)
         points_2.push_back(pair<int,int>(points_1[i].second, points_1[i].first));
-    for(int i = points_2.size() - 1; i >= 0 ; i--)
+    for(int i = int(points_2.size() - 1); i >= 0 ; i--)
         points_1.push_back(points_2[i]);
     points_2.clear();
 
